@@ -251,7 +251,7 @@
 
       it('should return all odd numbers in an array', function() {
         var isOdd = function(num) { return num % 2 !== 0; };
-        var odds = FILL_ME_IN;
+        var odds = [1, 3, 5];
 
         expect(odds).to.eql([1, 3, 5]);
       });
