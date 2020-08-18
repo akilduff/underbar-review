@@ -100,10 +100,39 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+
+    // return the result of filter on the collection
+    // except not pass test, pass the inverse of test (via an anon function)
+    return _.filter(collection, function(item) {
+      return !test(item);
+    });
+
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    // make a copy of the array
+    const result = [];
+
+    // iterate through array using _.each
+    // parameters - collection, iterator
+    // iterator - if item is not contained within result, push into result
+    if (arguments[2] === undefined) {
+      _.each(array, function(item) {
+        if (result.includes(item) === false) {
+          result.push(item);
+        }
+      });
+    } else {
+      _.each(array, function(item) {
+        if (result.includes(iterator(item)) === false) {
+          result.push(item);
+        }
+      });
+    }
+
+    return result;
+    //
   };
 
 
