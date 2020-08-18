@@ -114,6 +114,10 @@
     // make a copy of the array
     const result = [];
 
+    // [4, 6, 3, 6, 5, 2]
+    // {4: 1, 6: 2, 3: 1, 5: 1, 2: 1}
+    // result: [4, 6, 3, 5, 2]
+
     // iterate through array using _.each
     // parameters - collection, iterator
     // iterator - if item is not contained within result, push into result
@@ -141,6 +145,14 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var result = [];
+    // go over each value
+    _.each(collection, function(value) {
+      result.push(iterator(value));
+    });
+    // run a function on those values
+    // pass the result of that function into a new array
+    return result;
   };
 
   /*
