@@ -409,7 +409,9 @@
     for (var i = 2; i < arguments.length; i++) {
       newArguments.push(arguments[i]);
     }
-    setTimeout(func.apply(this, newArguments), wait);
+    setTimeout(function () {
+      func.apply(this, newArguments);
+    }, wait);
   };
 
 
