@@ -113,27 +113,40 @@
   _.uniq = function(array, isSorted, iterator) {
     // make a copy of the array
     const result = [];
+    const seen = {};
 
     // [4, 6, 3, 6, 5, 2]
     // {4: 1, 6: 2, 3: 1, 5: 1, 2: 1}
     // result: [4, 6, 3, 5, 2]
 
+    for (var i = 0; i < array.length; i++) {
+      if (!seen[array[i]]) {
+        seen[array[i]] = 1;
+      } else {
+        seen[array[i]]++;
+      }
+    }
+
+    for (let key in seen) {
+      result.push(Number(key));
+    }
+
     // iterate through array using _.each
     // parameters - collection, iterator
     // iterator - if item is not contained within result, push into result
-    if (arguments[2] === undefined) {
-      _.each(array, function(item) {
-        if (result.includes(item) === false) {
-          result.push(item);
-        }
-      });
-    } else {
-      _.each(array, function(item) {
-        if (result.includes(iterator(item)) === false) {
-          result.push(item);
-        }
-      });
-    }
+    // if (iterator === undefined) {
+    //   _.each(array, function(item) {
+    //     if (result.includes(item) === false) {
+    //       result.push(item);
+    //     }
+    //   });
+    // } else {
+    //   _.each(array, function(item) {
+    //     if (result.includes(iterator(item)) === false) {
+    //       result.push(item);
+    //     }
+    //   });
+    // }
 
     return result;
     //
@@ -314,6 +327,18 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var result = obj;
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (typeof arguments[i] === 'object') {
+        for (var key in arguments[i]) {
+          if (result[key] === undefined) {
+            result[key] = arguments[i][key];
+          }
+        }
+      }
+    }
+    return result;
   };
 
 
@@ -357,6 +382,20 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // create an object.
+    var cache = {};
+    return function() {
+      var key = JSON.stringify(arguments);
+      if (!cache[key]) {
+        cache[key] = func.apply(this, arguments);
+      }
+      return cache[key];
+    };
+    // key is the input, the value is the output
+    // key is JSON.stringify of the arguments
+    // if the key exists, then just give the value of the key:value pair
+    //
+    // otherwise run the func
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -366,6 +405,11 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var newArguments = [];
+    for (var i = 2; i < arguments.length; i++) {
+      newArguments.push(arguments[i]);
+    }
+    setTimeout(func.apply(this, newArguments), wait);
   };
 
 
