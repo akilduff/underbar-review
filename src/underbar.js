@@ -114,21 +114,21 @@
     // make a copy of the array
     const result = [];
     const seen = {};
+    if (iterator === undefined) {
+      iterator = _.identity;
+    }
 
     // [4, 6, 3, 6, 5, 2]
     // {4: 1, 6: 2, 3: 1, 5: 1, 2: 1}
     // result: [4, 6, 3, 5, 2]
-
     for (var i = 0; i < array.length; i++) {
-      if (!seen[array[i]]) {
-        seen[array[i]] = 1;
-      } else {
-        seen[array[i]]++;
+      if (!seen[iterator(array[i])]) {
+        seen[iterator(array[i])] = array[i];
       }
     }
 
     for (let key in seen) {
-      result.push(Number(key));
+      result.push(seen[key]);
     }
 
     // iterate through array using _.each
