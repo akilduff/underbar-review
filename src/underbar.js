@@ -229,12 +229,52 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    // set accumulator to true
+    var accumulator = true;
+
+    // run reduce on collection
+    if (arguments[1] === undefined) {
+      _.each(collection, function(item) {
+        if (item && accumulator) {
+          accumulator = true;
+        } else {
+          accumulator = false;
+        }
+      });
+    } else {
+      _.each(collection, function(item) {
+        if (iterator(item) && accumulator) {
+          accumulator = true;
+        } else {
+          accumulator = false;
+        }
+      });
+    }
+    // iterator takes in accumulator and value
+    // if(value) return true, else return false
+
+    return accumulator;
+
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    let accumulator = false;
+
+    for (var i = 0; i < collection.length; i++) {
+      if (arguments[1] !== undefined) {
+        if (iterator(collection[i])) {
+          return true;
+        }
+      } else {
+        if (collection[i]) {
+          return true;
+        }
+      }
+    }
+    return accumulator;
   };
 
 
@@ -257,6 +297,18 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    // if we get two empty objs, return an empty obj
+    // access arguments array
+    var result = obj;
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (typeof arguments[i] === 'object') {
+        for (var key in arguments[i]) {
+          result[key] = arguments[i][key];
+        }
+      }
+    }
+    return result;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
