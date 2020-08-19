@@ -429,7 +429,7 @@
     // get random index of the array
     var copyOfArray = array.slice(0);
     var indexSlice = Math.floor(Math.random() * array.length);
-    var firstSection = copyOfArray.slice(0,indexSlice);
+    var firstSection = copyOfArray.slice(0, indexSlice);
     var secondSection = copyOfArray.slice(indexSlice);
     return secondSection.concat(firstSection);
 
